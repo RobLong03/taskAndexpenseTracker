@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 public class UserRequest {
 
 
+    private Integer Id;
+
     private String username;
 
     private String name;

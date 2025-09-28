@@ -15,6 +15,9 @@ import java.util.List;
 @Builder
 public class ExpenseProfileRequest {
 
+
+    private Integer Id;
+
     private UserRequest user;
 
 

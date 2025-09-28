@@ -1,6 +1,7 @@
 package com.roberto.main.dtos.expenses;
 
 
+import com.roberto.main.dtos.anagraficas.ExpenseProfileDto;
 import com.roberto.main.models.anagraficas.ExpenseProfile;
 import jakarta.persistence.*;
 import lombok.*;

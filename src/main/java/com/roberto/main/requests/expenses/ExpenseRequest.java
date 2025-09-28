@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @Builder
 public class ExpenseRequest {
 
-
+    private Integer Id;
 
     private ExpenseJobRequest expenseJob;
 

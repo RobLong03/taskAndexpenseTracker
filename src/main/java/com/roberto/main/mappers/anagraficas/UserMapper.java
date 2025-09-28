@@ -1,9 +1,10 @@
 package com.roberto.main.mappers.anagraficas;
 
 import com.roberto.main.dtos.anagraficas.UserDto;
-import com.roberto.main.dtos.expenses.ExpenseProfileDto;
-import com.roberto.main.models.anagraficas.ExpenseProfile;
+
 import com.roberto.main.models.anagraficas.User;
+import com.roberto.main.requests.anagraficas.UserRequest;
+
 
 public class UserMapper {
 
@@ -17,9 +18,13 @@ public class UserMapper {
         dto.setPassword(user.getPassword());
         dto.setRole(user.getRole());
         dto.setActive(user.isActive());
+        dto.setCreatedAt(user.getCreatedAt());
+        dto.setLastUpdatedOn(user.getLastUpdatedOn());
+
+
 
         dto.setFinancialProfile(
-                ExpenseProfileMapper.toDto(user.getFinancialProfile())
+                ExpenseProfileMapper.toUserDto(user.getFinancialProfile())
         );
 
         return dto;
@@ -35,9 +40,11 @@ public class UserMapper {
         dto.setPassword(user.getPassword());
         dto.setRole(user.getRole());
         dto.setActive(user.isActive());
+        dto.setCreatedAt(user.getCreatedAt());
+        dto.setLastUpdatedOn(user.getLastUpdatedOn());
 
         dto.setFinancialProfile(
-                ExpenseProfileMapper.toDtoComplete(user.getFinancialProfile())
+                ExpenseProfileMapper.toUserDtoComplete(user.getFinancialProfile())
         );
 
 
@@ -55,13 +62,35 @@ public class UserMapper {
         entity.setPassword(dto.getPassword());
         entity.setRole(dto.getRole());
         entity.setActive(dto.isActive());
+        entity.setCreatedAt(dto.getCreatedAt());
+        entity.setLastUpdatedOn(dto.getLastUpdatedOn());
+
 
 
         entity.setFinancialProfile(
-                ExpenseProfileMapper.toEntity(dto.getFinancialProfile())
+                ExpenseProfileMapper.toExpenseProfileEntity(dto.getFinancialProfile())
         );
 
         return entity;
+    }
+
+    public static User toUserEntity(UserRequest userRequest){
+        if (userRequest == null) return null;
+        User user = new User();
+        user.setId(userRequest.getId());
+        user.setName(userRequest.getName());
+        user.setEmail(userRequest.getEmail());
+        user.setPassword(userRequest.getPassword());
+        user.setRole(userRequest.getRole());
+        user.setActive(userRequest.isActive());
+        user.setCreatedAt(userRequest.getCreatedAt());
+        user.setLastUpdatedOn(userRequest.getLastUpdatedOn());
+
+        user.setFinancialProfile(
+         ExpenseProfileMapper.toExpenseProfileEntity(userRequest.getFinancialProfileRequest()));
+
+        return user;
+
     }
 }
 

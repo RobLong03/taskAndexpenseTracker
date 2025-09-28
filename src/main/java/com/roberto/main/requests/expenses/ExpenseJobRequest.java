@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 public class ExpenseJobRequest {
 
 
-
+    private Integer Id;
     // Relationship to ExpenseProfile
 
     private ExpenseProfileRequest expenseprofile;

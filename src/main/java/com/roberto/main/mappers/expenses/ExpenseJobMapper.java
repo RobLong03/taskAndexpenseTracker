@@ -2,8 +2,6 @@ package com.roberto.main.mappers.expenses;
 
 import com.roberto.main.dtos.expenses.ExpenseJobDto;
 import com.roberto.main.mappers.anagraficas.ExpenseProfileMapper;
-import com.roberto.main.models.anagraficas.ExpenseProfile;
-import com.roberto.main.models.expenses.Expense;
 import com.roberto.main.models.expenses.ExpenseJob;
 
 public class ExpenseJobMapper {
@@ -14,7 +12,7 @@ public class ExpenseJobMapper {
         expensejobDto.setId(expensejob.getId());
         expensejobDto.setMonthlyBudget(expensejob.getMonthlyBudget());
         expensejobDto.setExpenseProfileDto(
-                ExpenseProfileMapper.toDto(expensejob.getExpenseprofile()));
+                ExpenseProfileMapper.toUserDto(expensejob.getExpenseprofile()));
         return expensejobDto;
     }
 
@@ -24,7 +22,7 @@ public class ExpenseJobMapper {
         expensejob.setId(expenseJobDto.getId());
         expensejob.setMonthlyBudget(expenseJobDto.getMonthlyBudget());
         expensejob.setExpenseprofile(
-                ExpenseProfileMapper.toEntity(expenseJobDto.getExpenseProfileDto()));
+                ExpenseProfileMapper.toExpenseProfileEntity(expenseJobDto.getExpenseProfileDto()));
         return expensejob;
     }
 }

@@ -27,5 +27,5 @@ public class TaskProfileDto {
     private String profileType;
 
 
-    private List<TaskJobDto> TaskJobs;
+    private List<TaskJobDto> TaskJobsDtos;
 }

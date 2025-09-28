@@ -6,6 +6,8 @@ import com.roberto.main.models.tasks.Task;
 public class TaskMapper {
 
     public static TaskDto toTaskDto(Task task) {
+
+        if (task == null) return null;
         TaskDto taskDto = new TaskDto();
 
         taskDto.setId(task.getId());
@@ -14,9 +16,11 @@ public class TaskMapper {
         taskDto.setDue_date(task.getDue_date());
         taskDto.setProgress(task.getProgress());
         taskDto.setPriority(task.getPriority());
-        taskDto.setTaskJobDto();
+        taskDto.setTaskJobDto(
+               TaskJobMapper.toTaskTagDto(task.getTaskJob()) );
 
 
+        return taskDto;
 
     }
 
@@ -30,7 +34,8 @@ public class TaskMapper {
         task.setProgress(taskDto.getProgress());
         task.setPriority(taskDto.getPriority());
 
-        task.setTaskJob(TaskJobMapper.toEntityTaskTag(taskDto.getTaskTagDto()));
+        task.setTaskJob(
+                TaskJobMapper.toEntityTaskTag(taskDto.getTaskJobDto()));
 
         return task;
 

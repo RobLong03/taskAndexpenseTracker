@@ -17,6 +17,8 @@ import java.util.List;
 public class TaskJobRequest {
 
 
+    private Integer Id;
+
     private TaskProfileRequest taskProfile;
 
 

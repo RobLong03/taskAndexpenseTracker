@@ -13,5 +13,7 @@ import lombok.*;
 public class ExpenseCategoryRequest {
 
 
+    private Integer Id;
+
     private String description;
 }

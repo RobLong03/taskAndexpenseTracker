@@ -17,6 +17,7 @@ public class TaskProfileRequest {
 
 
 
+    private Integer Id;
 
     private UserRequest user;
 

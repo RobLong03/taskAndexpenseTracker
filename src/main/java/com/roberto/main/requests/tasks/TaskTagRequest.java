@@ -8,6 +8,8 @@ import java.util.List;
 public class TaskTagRequest {
 
 
+    private Integer Id;
+
     private String description;
 
     private List<TaskRequest> tasks;
