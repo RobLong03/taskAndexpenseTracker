@@ -1,44 +1,85 @@
 package com.roberto.main.mappers.anagraficas;
 
 import com.roberto.main.dtos.anagraficas.TaskProfileDto;
+import com.roberto.main.dtos.anagraficas.UserDto;
+import com.roberto.main.dtos.tasks.TaskJobDto;
 import com.roberto.main.mappers.tasks.TaskJobMapper;
+import com.roberto.main.mappers.tasks.TaskMapper;
+import com.roberto.main.mappers.tasks.TaskTagMapper;
 import com.roberto.main.models.anagraficas.TaskProfile;
+import com.roberto.main.models.tasks.TaskJob;
+import com.roberto.main.requests.anagraficas.TaskProfileRequest;
+import com.roberto.main.requests.anagraficas.UserRequest;
+import com.roberto.main.requests.tasks.TaskJobRequest;
+import org.mapstruct.*;
+import org.mapstruct.factory.Mappers;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
-public class TaskProfileMapper {
+@Mapper(
+        componentModel = "spring",
+        uses = { UserMapper.class, TaskJobMapper.class, TaskMapper.class, TaskTagMapper.class },
+        unmappedTargetPolicy = ReportingPolicy.ERROR
+)
+public interface TaskProfileMapper {
 
-    public  static TaskProfileDto toTaskTaskProfileDto(TaskProfile profile) {
-        if (profile == null) return  null;
+    // -------- Entity -> DTO --------
 
-        TaskProfileDto profileDto = new TaskProfileDto();
-        profileDto.setId(profile.getId());
-        profileDto.setUserDto(UserMapper.toUserDto(profile.getUser()));
-        profileDto.setProfileType(profile.getProfileType());
+    //recursive calling betweeenn many
+    @Named("taskProfileToDto")
+    @Mappings({
+            @Mapping(target = "userDto",      source = "user"),
+            @Mapping(target = "taskJobsDtos", source = "taskJobs")
+            // DO NOT map taskProfileDto or tasksDtos unless they really exist on TaskProfileDto
+    })
+    TaskProfileDto toTaskProfileDto(TaskProfile taskProfile);
 
-        if(!profile.getTaskJobs().isEmpty()) profileDto.setTaskJobsDtos(profile.getTaskJobs().stream().map(TaskJobMapper::toTaskTagDto).collect(Collectors.toList()));
-       // profileDto.setTaskJobs(TaskJobMapper.toTaskTaskProfileDto());
+    @IterableMapping(qualifiedByName = "taskProfileToDto")
+    @Mappings({
+            @Mapping(target = "userDto", source = "user"),
+            @Mapping(target = "taskJobsDtos", source = "taskJobs")
+    })
+    List<TaskProfileDto> toTaskProfileDtos(List<TaskProfile> taskProfiles);
 
+    // -------- DTO -> Entity --------
 
+    @Named("dtoToTaskProfile")
+    @Mappings({
+            @Mapping(target = "user", source = "userDto"),
+            @Mapping(target = "taskJobs", source = "taskJobsDtos")
+    })
+    TaskProfile toTaskProfile(TaskProfileDto taskProfileDto);
 
-        return  profileDto;
-    }
+    @IterableMapping(qualifiedByName = "dtoToTaskProfile")
+    @Mappings({
+            @Mapping(target = "user", source = "userDto"),
+            @Mapping(target = "taskJobs", source = "taskJobsDtos")
+    })
+    List<TaskProfile> toTaskProfiles(List<TaskProfileDto> taskProfileDtos);
 
-    public  static TaskProfile toEntityTaskyProfile(TaskProfileDto profiledto) {
-        if (profiledto == null) return null;
+    // -------- Request -> DTO --------
+    // userRequest -> user, taskJobRequests -> taskJobs
+    @Mappings({
+            @Mapping(target = "userDto", ignore = true),
+            @Mapping(target = "taskJobsDtos" ,ignore = true)
+    })
+    TaskProfileDto toTaskProfileDto(TaskProfileRequest taskProfileRequest);
 
-        TaskProfile profile = new TaskProfile();
-        profile.setId(profiledto.getId());
-        profile.setProfileType(profiledto.getProfileType());
-        profile.setUser(UserMapper.toUserEntity(profiledto.getUserDto()));
+    // -------- DTO -> Request --------
+    // user -> userRequest, taskJobs -> taskJobRequests
+    @Mappings({
+            @Mapping(target = "user", source = "userDto"),
+            @Mapping(target = "taskJobs", source = "taskJobsDtos")
+    })
+    TaskProfileRequest toTaskProfileRequest(TaskProfileDto taskProfileDto);
 
+    // -------- PATCH update (Request -> existing Entity) --------
+    // Ignore nulls so we only update provided fields
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mappings({
+            @Mapping(target = "taskJobs", source = "taskJobs")})// TaskJobMapper handles element mapping
 
-        if(!profiledto.getTaskJobsDtos().isEmpty()) profile.setTaskJobs(profiledto.getTaskJobsDtos().stream().map(TaskJobMapper::toEntityTaskTag).collect(Collectors.toList()));
-        // profileDto.setTaskJobs(TaskJobMapper.toTaskTaskProfileDto());
-
-
-        return  profile;
-    }
-
-
+    void updateTaskProfile(TaskProfileRequest taskProfileRequest, @MappingTarget TaskProfile taskProfile);
 }
+//TODO: CHECK IF THERE ARE ANY OTHER CASE OF RECURSION

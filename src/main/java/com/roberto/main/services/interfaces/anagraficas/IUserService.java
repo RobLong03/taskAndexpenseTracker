@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface IUserService  {
 
-    public Integer SaveOrUpdateUser(UserRequest userRequest)throws Exception;
+    public void SaveOrUpdateUser(UserRequest userRequest)throws Exception;
     //to add a method that delete by ID
     public void DeleteUser(UserRequest userRequest)throws Exception;
 

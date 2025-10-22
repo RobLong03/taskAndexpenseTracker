@@ -16,7 +16,7 @@ import java.util.List;
 public class TaskTagDto {
 
 
-    private Integer Id;
+    private Integer id;
 
 
     private String description;

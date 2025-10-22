@@ -17,7 +17,7 @@ import java.util.List;
 @Builder
 public class TaskProfileDto {
 
-    private Integer Id;
+    private Integer id;
 
 
     private UserDto userDto;
@@ -27,5 +27,5 @@ public class TaskProfileDto {
     private String profileType;
 
 
-    private List<TaskJobDto> TaskJobsDtos;
+    private List<TaskJobDto> taskJobsDtos;
 }

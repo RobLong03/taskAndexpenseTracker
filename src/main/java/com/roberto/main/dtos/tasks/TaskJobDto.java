@@ -18,7 +18,7 @@ import java.util.List;
 public class TaskJobDto {
 
 
-    private Integer Id;
+    private Integer id;
 
 
     private TaskProfileDto taskProfileDto;

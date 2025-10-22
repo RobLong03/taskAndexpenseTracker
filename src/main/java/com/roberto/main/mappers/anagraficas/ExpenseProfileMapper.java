@@ -1,11 +1,46 @@
 package com.roberto.main.mappers.anagraficas;
 
 import com.roberto.main.dtos.anagraficas.ExpenseProfileDto;
+import com.roberto.main.mappers.expenses.ExpenseJobMapper;
 import com.roberto.main.models.anagraficas.ExpenseProfile;
 import com.roberto.main.requests.anagraficas.ExpenseProfileRequest;
+import org.mapstruct.*;
+import org.mapstruct.factory.Mappers;
 
-public class ExpenseProfileMapper {
+import java.beans.BeanProperty;
 
+@Mapper(componentModel = "spring",uses = { ExpenseJobMapper.class})
+public interface ExpenseProfileMapper {
+
+
+    //UserMapper.class , problem with recursion change with mapping
+    /*@Mapping(target = "user", ignore = true)
+ExpenseProfileDto toExpenseProfileDto(ExpenseProfile expenseProfile);*/
+
+    @Mapping(target = "userDto", ignore = true)
+    ExpenseProfileDto toExpenseProfileDto(ExpenseProfile expenseProfile);
+
+    ExpenseProfile toExpenseProfile(ExpenseProfileRequest expenseProfileRequest);
+
+    ExpenseProfile toExpenseProfile(ExpenseProfileDto expenseProfileDto);
+
+    /** **/
+    ExpenseProfileRequest toExpenseProfileRequest(ExpenseProfileDto expenseProfileDto);
+    ExpenseProfileRequest toExpenseProfileRequest(ExpenseProfile expenseProfile);
+
+
+    @BeanMapping(nullValuePropertyMappingStrategy= NullValuePropertyMappingStrategy.IGNORE)
+    @Mappings({
+            @Mapping(source = "user",target = "user"),
+            @Mapping(source = "description" , target = "description"),
+            @Mapping(source = "activeAmount",target = "activeAmount"),
+            @Mapping(source = "passiveAmount",target = "passiveAmount"),
+            @Mapping(source = "balance" , target = "balance"),
+            @Mapping(source = "expenseJobRequests", target="expenseJobs"),
+            @Mapping(source =  "budget" , target = "budget")
+    })
+    void updateExpenseProfile(ExpenseProfileRequest expenseProfileRequest , @MappingTarget ExpenseProfile expenseProfile);
+    /*
     public static ExpenseProfileDto toUserDto(ExpenseProfile entity) {
         if (entity == null) return null;
 
@@ -55,4 +90,6 @@ public class ExpenseProfileMapper {
         entity.setPassiveAmount(request.getPassiveAmount());
         return entity;
     }
+    */
+
 }

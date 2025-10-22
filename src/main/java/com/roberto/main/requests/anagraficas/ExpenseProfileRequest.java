@@ -16,7 +16,7 @@ import java.util.List;
 public class ExpenseProfileRequest {
 
 
-    private Integer Id;
+    private Integer id;
 
     private UserRequest user;
 
@@ -29,7 +29,7 @@ public class ExpenseProfileRequest {
 
     private BigDecimal balance;
 
-    private List<ExpenseJobRequest> ExpenseJobRequests;
+    private List<ExpenseJobRequest> expenseJobRequests;
 
     private BigDecimal budget;
 

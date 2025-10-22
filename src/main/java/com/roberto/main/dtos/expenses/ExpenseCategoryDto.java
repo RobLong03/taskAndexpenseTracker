@@ -21,7 +21,7 @@ import java.util.List;
 @Builder
 public class ExpenseCategoryDto{
 
-    private Integer Id;
+    private Integer id;
 
     private String description;
 

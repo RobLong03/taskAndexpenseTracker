@@ -17,7 +17,7 @@ public class TaskProfileRequest {
 
 
 
-    private Integer Id;
+    private Integer id;
 
     private UserRequest user;
 
@@ -25,6 +25,6 @@ public class TaskProfileRequest {
     private String profileType;
 
 
-    private List<TaskJobRequest> TaskJobs;
+    private List<TaskJobRequest> taskJobs;
 
 }

@@ -36,7 +36,7 @@ public class ExpenseProfile {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer Id;
+	private Integer id;
 	
 	@OneToOne
 	@JoinColumn(name="user_id")
@@ -62,7 +62,7 @@ public class ExpenseProfile {
 	        fetch = FetchType.EAGER,
 	        mappedBy = "expenseprofile" 
 	    )
-	private List<ExpenseJob> ExpenseJobs;
+	private List<ExpenseJob> expenseJobs;
 
 	
 	@Currency(value = { "EUR" ,"USD"})

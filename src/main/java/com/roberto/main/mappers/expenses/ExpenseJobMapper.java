@@ -1,11 +1,33 @@
 package com.roberto.main.mappers.expenses;
 
 import com.roberto.main.dtos.expenses.ExpenseJobDto;
-import com.roberto.main.mappers.anagraficas.ExpenseProfileMapper;
+import com.roberto.main.models.anagraficas.ExpenseProfile;
+import com.roberto.main.models.anagraficas.User;
 import com.roberto.main.models.expenses.ExpenseJob;
+import com.roberto.main.requests.anagraficas.UserRequest;
+import com.roberto.main.requests.expenses.ExpenseJobRequest;
+import org.mapstruct.*;
+import org.mapstruct.factory.Mappers;
 
-public class ExpenseJobMapper {
+@Mapper(componentModel = "spring")
+public interface ExpenseJobMapper {
 
+
+
+    ExpenseJobDto toExpenseJobDto(ExpenseJob expenseJob);
+    ExpenseJob fromExpenseJobDto(ExpenseJobDto expenseJobDto);
+    ExpenseJob toExpenseJob(ExpenseJobRequest expenseJobRequest);
+    ExpenseJobRequest toExpenseJobRequest(ExpenseJobDto expenseJobDto);
+
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mappings({
+            @Mapping(source = "expenseprofile",target = "expenseprofile"),
+            @Mapping(source = "monthlyBudget",target = "monthlyBudget")
+    })
+    void updateExpenseJobFromRequest(ExpenseJobRequest expenseJobRequest, @MappingTarget ExpenseJob expenseJob);
+
+    /*
     public  static ExpenseJobDto toExpenseJobDto(ExpenseJob expensejob) {
 
         ExpenseJobDto expensejobDto = new ExpenseJobDto();
@@ -25,4 +47,6 @@ public class ExpenseJobMapper {
                 ExpenseProfileMapper.toExpenseProfileEntity(expenseJobDto.getExpenseProfileDto()));
         return expensejob;
     }
+
+     */
 }

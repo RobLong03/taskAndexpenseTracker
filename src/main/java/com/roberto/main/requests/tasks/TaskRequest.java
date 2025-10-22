@@ -19,9 +19,9 @@ import java.time.LocalDateTime;
 public class TaskRequest {
 
 
-    private Integer Id;
+    private Integer id;
 
-    private TaskJobRequest TaskJob;
+    private TaskJobRequest taskJob;
 
     private String title;
 

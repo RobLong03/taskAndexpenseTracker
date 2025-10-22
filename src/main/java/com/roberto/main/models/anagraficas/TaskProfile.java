@@ -25,7 +25,7 @@ public class TaskProfile {
  
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer Id;
+    private Integer id;
 
     @OneToOne
     @JoinColumn(name="user_id")
@@ -39,9 +39,9 @@ public class TaskProfile {
             orphanRemoval = true,
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER,
-            mappedBy = "Id"
+            mappedBy = "id"
     )
-    private List<TaskJob> TaskJobs;
+    private List<TaskJob> taskJobs;
 
     //settings maybe inserted to be used to adjust logic
 

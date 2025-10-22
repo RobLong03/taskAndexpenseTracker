@@ -1,97 +1,44 @@
 package com.roberto.main.mappers.anagraficas;
 
 import com.roberto.main.dtos.anagraficas.UserDto;
-
 import com.roberto.main.models.anagraficas.User;
 import com.roberto.main.requests.anagraficas.UserRequest;
+import org.mapstruct.*;
 
+import java.util.List;
 
-public class UserMapper {
+@Mapper(componentModel = "spring",
+        unmappedTargetPolicy = ReportingPolicy.ERROR,uses = { ExpenseProfileMapper.class} )
+public interface UserMapper {
 
-    public static UserDto toUserDto(User user) {
-        if (user == null) return null;
+    UserDto userToUserDto(User user);
+    @IterableMapping(qualifiedByName = "userToUserDtoNamed")
+    List<UserDto> toUserDtos(List<User> users);
 
-        UserDto dto = new UserDto();
-        dto.setId(user.getId());
-        dto.setName(user.getName());
-        dto.setEmail(user.getEmail());
-        dto.setPassword(user.getPassword());
-        dto.setRole(user.getRole());
-        dto.setActive(user.isActive());
-        dto.setCreatedAt(user.getCreatedAt());
-        dto.setLastUpdatedOn(user.getLastUpdatedOn());
+    // Give the single mapping a name so the list method can reuse it
+    @Named("userToUserDtoNamed")
+    UserDto _userToUserDto(User user);
 
+    // --- Request <-> Entity / DTO
+    @Mappings({
+            // keep only fields that differ in name; identical names don’t need mappings
+            @Mapping(target = "financialProfile", source = "financialProfileRequest")
+    })   // if your UserRequest also uses "Id"
+    User toUser(UserRequest userRequest);
 
+    @Mappings({
+            @Mapping(target = "financialProfile", source = "financialProfileRequest")
+    })
+    UserDto toUserDto(UserRequest userRequest);
 
-        dto.setFinancialProfile(
-                ExpenseProfileMapper.toUserDto(user.getFinancialProfile())
-        );
+    @Mappings({
+            @Mapping(target = "financialProfileRequest", source = "financialProfile")
+    })
+    UserRequest toUserRequest(UserDto userDto);
 
-        return dto;
-    }
-
-    public static UserDto toUserDtoComplete(User user) {
-        if (user == null) return null;
-
-        UserDto dto = new UserDto();
-        dto.setId(user.getId());
-        dto.setName(user.getName());
-        dto.setEmail(user.getEmail());
-        dto.setPassword(user.getPassword());
-        dto.setRole(user.getRole());
-        dto.setActive(user.isActive());
-        dto.setCreatedAt(user.getCreatedAt());
-        dto.setLastUpdatedOn(user.getLastUpdatedOn());
-
-        dto.setFinancialProfile(
-                ExpenseProfileMapper.toUserDtoComplete(user.getFinancialProfile())
-        );
-
-
-        return dto;
-    }
-
-
-    public static User toUserEntity(UserDto dto) {
-        if (dto == null) return null;
-
-        User entity = new User();
-        entity.setId(dto.getId());
-        entity.setName(dto.getName());
-        entity.setEmail(dto.getEmail());
-        entity.setPassword(dto.getPassword());
-        entity.setRole(dto.getRole());
-        entity.setActive(dto.isActive());
-        entity.setCreatedAt(dto.getCreatedAt());
-        entity.setLastUpdatedOn(dto.getLastUpdatedOn());
-
-
-
-        entity.setFinancialProfile(
-                ExpenseProfileMapper.toExpenseProfileEntity(dto.getFinancialProfile())
-        );
-
-        return entity;
-    }
-
-    public static User toUserEntity(UserRequest userRequest){
-        if (userRequest == null) return null;
-        User user = new User();
-        user.setId(userRequest.getId());
-        user.setName(userRequest.getName());
-        user.setEmail(userRequest.getEmail());
-        user.setPassword(userRequest.getPassword());
-        user.setRole(userRequest.getRole());
-        user.setActive(userRequest.isActive());
-        user.setCreatedAt(userRequest.getCreatedAt());
-        user.setLastUpdatedOn(userRequest.getLastUpdatedOn());
-
-        user.setFinancialProfile(
-         ExpenseProfileMapper.toExpenseProfileEntity(userRequest.getFinancialProfileRequest()));
-
-        return user;
-
-    }
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mappings({
+            @Mapping(target = "financialProfile", source = "financialProfileRequest")
+    })
+    void updateUserFromRequest(UserRequest userRequest, @MappingTarget User userSave);
 }
-
-

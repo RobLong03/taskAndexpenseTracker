@@ -2,50 +2,72 @@ package com.roberto.main.services.implementations.anagraficas;
 
 
 import com.roberto.main.dtos.anagraficas.UserDto;
+import com.roberto.main.mappers.anagraficas.UserMapper;
+import com.roberto.main.models.anagraficas.User;
+import com.roberto.main.repositories.anagraficas.UserRepository;
 import com.roberto.main.requests.anagraficas.UserRequest;
 import com.roberto.main.services.interfaces.anagraficas.IUserService;
-import org.slf4j.Logger;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+
+//it serves to have the constructor injector without doing or making by hand the constructor
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements IUserService {
 
-    private IUserService userService;
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
     //private Logger logger;
-
-    UserServiceImpl(IUserService userService) {
-        this.userService = userService;
-    }
 
 
     @Override
-    public Integer SaveOrUpdateUser(UserRequest userRequest) throws Exception {
-        if (userRequest==null)return null;
+    public void SaveOrUpdateUser(UserRequest userRequest) throws Exception {
+        if (userRequest == null) return ;
 
-
-        if (userRequest.getId()!=null){
-
-
+        User userSave;
+        if (userRequest.getId() != null) {
+            Optional<User> existingUser = userRepository.getUserById((userRequest.getId()));
+            if (existingUser.isPresent()) {
+                userSave = existingUser.get();
+                // update fields from request into entity
+                userMapper.updateUserFromRequest(userRequest, userSave);
+            } else {
+                // if id given but not found, decide if you want to throw exception or insert
+                throw new Exception("User not found with id: " + userRequest.getId());
+            }
+        } else {
+            userSave = userMapper.toUser(userRequest);
         }
 
-        return 0;
+        userSave = userRepository.save(userSave);
+
     }
 
     @Override
     public void DeleteUser(UserRequest userRequest) throws Exception {
 
+        if (userRequest == null) return;
+        Optional<User> existingUser = userRepository.getUserById((userRequest.getId()));
+        if (existingUser.isPresent()) {
+            userRepository.deleteById(userRequest.getId());
+        }else {
+            throw new Exception("User not found with id: " + userRequest.getId());
+        }
+
     }
 
     @Override
     public Optional<UserDto> GetUserById(Integer Id) throws Exception {
-        return Optional.empty();
+         return Optional.ofNullable(userMapper.userToUserDto(userRepository.getUserById(Id).
+                 orElseThrow(() -> new Exception("User not found with id: " + Id))));
     }
 
     @Override
     public List<UserDto> GetAllUsers() throws Exception {
-        return List.of();
+        return userMapper.toUserDtos(userRepository.findAll()) ;
     }
 }

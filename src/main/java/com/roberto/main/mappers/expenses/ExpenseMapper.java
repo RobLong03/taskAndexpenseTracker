@@ -1,11 +1,28 @@
 package com.roberto.main.mappers.expenses;
 
 import com.roberto.main.dtos.expenses.ExpenseDto;
+import com.roberto.main.mappers.anagraficas.ExpenseProfileMapper;
 import com.roberto.main.models.expenses.Expense;
 import com.roberto.main.models.expenses.ExpenseJob;
+import com.roberto.main.requests.expenses.ExpenseRequest;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.factory.Mappers;
 
-public class ExpenseMapper {
+@Mapper(componentModel = "spring", uses = {ExpenseProfileMapper.class, ExpenseJobMapper.class})
+public interface ExpenseMapper {
 
+    ExpenseDto toExpenseDto(Expense expense);
+    ExpenseDto toExpenseDto(ExpenseRequest expenseRequest);
+    Expense toExpense(ExpenseDto expenseDto);
+    Expense toExpense(ExpenseRequest expenseRequest);
+    ExpenseRequest toExpenseRequest(ExpenseDto expenseDto);
+    ExpenseRequest toExpenseRequest(Expense expense);
+
+
+    void updateExpense( ExpenseRequest expenseRequest,@MappingTarget Expense expense);
+
+    /*
     public static ExpenseDto toExpenseDTo(Expense expense) {
 
         if (expense == null)return null;
@@ -43,5 +60,5 @@ public class ExpenseMapper {
 
     }
 
-
+*/
 }

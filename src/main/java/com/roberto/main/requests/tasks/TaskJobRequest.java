@@ -17,11 +17,11 @@ import java.util.List;
 public class TaskJobRequest {
 
 
-    private Integer Id;
+    private Integer id;
 
     private TaskProfileRequest taskProfile;
 
 
-    private List<TaskRequest> Tasks;
+    private List<TaskRequest> tasks;
 
 }

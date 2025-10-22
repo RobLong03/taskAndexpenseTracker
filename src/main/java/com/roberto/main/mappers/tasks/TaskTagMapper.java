@@ -1,40 +1,26 @@
 package com.roberto.main.mappers.tasks;
 
-import com.roberto.main.dtos.tasks.TaskDto;
 import com.roberto.main.dtos.tasks.TaskTagDto;
-import com.roberto.main.models.tasks.Task;
 import com.roberto.main.models.tasks.TaskTag;
+import com.roberto.main.requests.tasks.TaskTagRequest;
+import org.mapstruct.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-public class TaskTagMapper {
-
-
-    public static TaskTagDto toTaskTagDto(TaskTag taskTag) {
-
-        if (taskTag == null) return null;
-        TaskTagDto taskTagDto = new TaskTagDto();
-        taskTagDto.setId(taskTag.getId());
-        taskTagDto.setDescription(taskTag.getDescription());
-
-        if (!taskTag.getTasks().isEmpty()) taskTagDto.setTasksDtos(taskTag.getTasks().stream().map(TaskMapper::toTaskDto).toList());
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
+public interface TaskTagMapper {
 
 
+    // Request -> Entity
+    @Mappings({
+            // Avoid recursion (a tag's tasks list is usually back-reference)
+            @Mapping(target = "tasks", ignore = true),
+            @Mapping(target = "id", ignore = true),
+            @Mapping(target = "description", ignore = true)
+    })
+    TaskTag toTaskTag(TaskTagRequest request);
 
-        return taskTagDto;
-
-    }
-    public  static TaskTag toEntityTaskTagDto(TaskTagDto taskTagDto) {
-
-        if (taskTagDto == null) return null;
-        TaskTag taskTag = new TaskTag();
-        taskTag.setId(taskTagDto.getId());
-        taskTag.setDescription(taskTagDto.getDescription());
-
-        if (!taskTagDto.getTasksDtos().isEmpty()) taskTag.setTasks(taskTagDto.getTasksDtos().stream().map(TaskMapper::toEntityTask).toList());
-
-        return taskTag;
-    }
-
+    // Entity -> DTO (adjust/extend if you need it)
+    @Mappings({
+            @Mapping(target = "tasksDtos", ignore = true)
+    })
+    TaskTagDto toTaskTagDto(TaskTag tag);
 }

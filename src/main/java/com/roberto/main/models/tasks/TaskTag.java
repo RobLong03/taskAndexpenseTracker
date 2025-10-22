@@ -19,11 +19,11 @@ public class TaskTag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer Id;
+    private Integer id;
 
     @Column(name = "description")
     private String description;
 
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "Id")
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "id")
     private List<Task> tasks;
 }

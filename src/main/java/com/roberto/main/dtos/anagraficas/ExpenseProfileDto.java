@@ -19,7 +19,7 @@ import java.util.List;
 public class ExpenseProfileDto {
 
 
-    private Integer Id;
+    private Integer id;
 
 
     private UserDto userDto;

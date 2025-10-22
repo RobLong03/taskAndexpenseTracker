@@ -18,9 +18,9 @@ import java.time.LocalDateTime;
 public class TaskDto {
 
 
-    private Integer Id;
+    private Integer id;
 
-    private TaskJobDto TaskJobDto;
+    private TaskJobDto taskJobDto;
 
 
     private String title;

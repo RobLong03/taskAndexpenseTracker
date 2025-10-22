@@ -24,7 +24,7 @@ public class TaskJob {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer Id;
+    private Integer id;
 
     // Relationship to User
     @ManyToOne(optional = false)
@@ -36,7 +36,7 @@ public class TaskJob {
             orphanRemoval = true,
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER,
-            mappedBy = "Id"
+            mappedBy = "id"
     )
     private List<Task> Tasks;
 

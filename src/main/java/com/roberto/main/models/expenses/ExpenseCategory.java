@@ -25,7 +25,7 @@ public class ExpenseCategory {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer Id;
+	private Integer id;
 	
 	@Column(name = "description",nullable = false)
 	private String description;

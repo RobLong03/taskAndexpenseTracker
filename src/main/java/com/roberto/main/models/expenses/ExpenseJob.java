@@ -24,7 +24,7 @@ public class ExpenseJob  {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer Id;
+	private Integer id;
 	
 	 // Relationship to ExpenseProfile
     @ManyToOne(optional = false)

@@ -3,7 +3,7 @@ package com.roberto.main;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.roberto.main")
 public class TaskAndexpenseTrackerApplication {
 
 	public static void main(String[] args) {

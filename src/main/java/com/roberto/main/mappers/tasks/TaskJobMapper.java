@@ -3,17 +3,47 @@ package com.roberto.main.mappers.tasks;
 import com.roberto.main.dtos.tasks.TaskDto;
 import com.roberto.main.dtos.tasks.TaskJobDto;
 
+import com.roberto.main.mappers.anagraficas.ExpenseProfileMapper;
 import com.roberto.main.mappers.anagraficas.TaskProfileMapper;
+import com.roberto.main.mappers.expenses.ExpenseJobMapper;
 import com.roberto.main.models.anagraficas.TaskProfile;
 import com.roberto.main.models.tasks.Task;
 import com.roberto.main.models.tasks.TaskJob;
+import com.roberto.main.requests.tasks.TaskJobRequest;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
+import org.mapstruct.factory.Mappers;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class TaskJobMapper {
+@Mapper(componentModel = "spring",uses = {TaskMapper.class,  ExpenseProfileMapper.class})
+public interface TaskJobMapper {
 
+    // Request -> Entity
+    @Mappings({
+            @Mapping(target = "tasks", ignore = true) // avoid back-ref cycle
+    })
+    TaskJob toTaskJob(TaskJobRequest request);
+
+    // Entity -> DTO
+    @Mappings({
+            @Mapping(target = "tasksDtos", ignore = true) // uncomment if exists
+    })
+    TaskJobDto toTaskJobDto(TaskJob job);
+
+    // Request -> DTO
+
+    //TO UNDERSTAND
+    @Mappings({
+            @Mapping(source = "taskProfileDto" , target = "taskProfile"),
+            @Mapping(source = "tasksDtos", target = "tasks")
+    })
+    TaskJobRequest toTaskJobRequest(TaskJobDto dto);
+
+    /*
     public static TaskJobDto toTaskTagDto(TaskJob taskTag) {
 
         TaskJobDto taskTagDto = new TaskJobDto();
@@ -51,4 +81,6 @@ public class TaskJobMapper {
         return  taskTag;
 
     }
+
+     */
 }

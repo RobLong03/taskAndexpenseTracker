@@ -23,11 +23,11 @@ public class Task {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Integer Id;
+    private Integer id;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "task_job_id")
-    private TaskJob TaskJob;
+    private TaskJob taskJob;
 
 
     @Column(name = "title", nullable = false)
