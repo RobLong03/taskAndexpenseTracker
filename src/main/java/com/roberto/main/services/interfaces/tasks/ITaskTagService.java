@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface ITaskTagService  {
 
-    public Integer SaveOrUpdateTaskTag(TaskTagRequest taskTagRequest)throws Exception;
+    public void SaveOrUpdateTaskTag(TaskTagRequest taskTagRequest)throws Exception;
 
     //to add a method that delete by ID
     public void DeleteTaskTag(TaskTagRequest taskTagRequest)throws Exception;

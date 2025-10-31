@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface ITaskProfileService  {
 
-    public Integer SaveOrUpdateTaskProfile(TaskProfileRequest taskProfileRequest)throws Exception;
+    public void SaveOrUpdateTaskProfile(TaskProfileRequest taskProfileRequest)throws Exception;
 
     public void DeleteTaskProfile(TaskProfileRequest taskProfileRequest)throws Exception;
 

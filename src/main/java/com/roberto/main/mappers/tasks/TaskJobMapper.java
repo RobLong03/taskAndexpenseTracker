@@ -1,5 +1,6 @@
 package com.roberto.main.mappers.tasks;
 
+import com.roberto.main.dtos.anagraficas.UserDto;
 import com.roberto.main.dtos.tasks.TaskDto;
 import com.roberto.main.dtos.tasks.TaskJobDto;
 
@@ -7,12 +8,12 @@ import com.roberto.main.mappers.anagraficas.ExpenseProfileMapper;
 import com.roberto.main.mappers.anagraficas.TaskProfileMapper;
 import com.roberto.main.mappers.expenses.ExpenseJobMapper;
 import com.roberto.main.models.anagraficas.TaskProfile;
+import com.roberto.main.models.anagraficas.User;
 import com.roberto.main.models.tasks.Task;
 import com.roberto.main.models.tasks.TaskJob;
+import com.roberto.main.requests.anagraficas.UserRequest;
 import com.roberto.main.requests.tasks.TaskJobRequest;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 import java.util.ArrayList;
@@ -43,6 +44,15 @@ public interface TaskJobMapper {
     })
     TaskJobRequest toTaskJobRequest(TaskJobDto dto);
 
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateTaskJobFromRequest(TaskJobRequest taskJobRequest, @MappingTarget TaskJob taskJob);
+
+    @IterableMapping(qualifiedByName = "taskJobToTaskJobDtoNamed")
+    List<TaskJobDto> toJobDtos(List<TaskJob> taskJobs);
+
+    // Give the single mapping a name so the list method can reuse it
+    @Named("taskJobToTaskJobDtoNamed")
+    UserDto _userToUserDto(User user);
     /*
     public static TaskJobDto toTaskTagDto(TaskJob taskTag) {
 

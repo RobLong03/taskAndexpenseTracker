@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface ITaskJobService  {
 
-    public Integer SaveOrUpdateTaskJob(TaskJobRequest taskJobRequest)throws Exception;
+    public void SaveOrUpdateTaskJob(TaskJobRequest taskJobRequest)throws Exception;
 
     //to add a method that delete by ID
     public void DeleteTaskJob(TaskJobRequest taskJobRequest)throws Exception;

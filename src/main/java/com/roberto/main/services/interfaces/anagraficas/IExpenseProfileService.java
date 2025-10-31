@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface IExpenseProfileService{
 
-    public Integer SaveOrUpdateExpenseProfile(ExpenseProfileRequest expenseProfileRequest)throws Exception;
+    public void SaveOrUpdateExpenseProfile(ExpenseProfileRequest expenseProfileRequest)throws Exception;
 
     public void DeleteExpenseProfile(ExpenseProfileRequest expenseProfileRequest)throws Exception;
 

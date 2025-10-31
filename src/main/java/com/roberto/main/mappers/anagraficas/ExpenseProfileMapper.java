@@ -1,13 +1,16 @@
 package com.roberto.main.mappers.anagraficas;
 
 import com.roberto.main.dtos.anagraficas.ExpenseProfileDto;
+import com.roberto.main.dtos.anagraficas.UserDto;
 import com.roberto.main.mappers.expenses.ExpenseJobMapper;
 import com.roberto.main.models.anagraficas.ExpenseProfile;
+import com.roberto.main.models.anagraficas.User;
 import com.roberto.main.requests.anagraficas.ExpenseProfileRequest;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 import java.beans.BeanProperty;
+import java.util.List;
 
 @Mapper(componentModel = "spring",uses = { ExpenseJobMapper.class})
 public interface ExpenseProfileMapper {
@@ -17,15 +20,30 @@ public interface ExpenseProfileMapper {
     /*@Mapping(target = "user", ignore = true)
 ExpenseProfileDto toExpenseProfileDto(ExpenseProfile expenseProfile);*/
 
-    @Mapping(target = "userDto", ignore = true)
+    @Mappings({
+            @Mapping(target = "userDto", source = "user"),
+            @Mapping(target = "ExpenseJobsDtos", source = "expenseJobs")
+    })
     ExpenseProfileDto toExpenseProfileDto(ExpenseProfile expenseProfile);
 
+    @Mappings({
+            @Mapping(target = "user", source = "user"),
+            @Mapping(target = "expenseJobs", source = "expenseJobRequests")
+    })
     ExpenseProfile toExpenseProfile(ExpenseProfileRequest expenseProfileRequest);
+
+    @IterableMapping(qualifiedByName = "userToExpenseProfileDtoNamed")
+    List<ExpenseProfileDto> toExpenseProfileDtos(List<ExpenseProfile> users);
 
     ExpenseProfile toExpenseProfile(ExpenseProfileDto expenseProfileDto);
 
-    /** **/
+
     ExpenseProfileRequest toExpenseProfileRequest(ExpenseProfileDto expenseProfileDto);
+
+    @Mappings({
+            @Mapping(target = "user", source = "user"),
+            @Mapping(target = "expenseJobRequests", source = "expenseJobs")
+    })
     ExpenseProfileRequest toExpenseProfileRequest(ExpenseProfile expenseProfile);
 
 

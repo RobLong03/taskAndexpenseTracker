@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface ITasksService  {
 
-    public Integer SaveOrUpdateTask(TaskRequest taskRequest)throws Exception;
+    public void SaveOrUpdateTask(TaskRequest taskRequest)throws Exception;
 
     //to add a method that delete by ID
     public void DeleteTask(TaskRequest taskRequest)throws Exception;
