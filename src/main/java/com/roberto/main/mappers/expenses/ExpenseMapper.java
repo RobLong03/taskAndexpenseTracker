@@ -1,13 +1,18 @@
 package com.roberto.main.mappers.expenses;
 
 import com.roberto.main.dtos.expenses.ExpenseDto;
+import com.roberto.main.dtos.expenses.ExpenseJobDto;
 import com.roberto.main.mappers.anagraficas.ExpenseProfileMapper;
 import com.roberto.main.models.expenses.Expense;
 import com.roberto.main.models.expenses.ExpenseJob;
 import com.roberto.main.requests.expenses.ExpenseRequest;
+import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {ExpenseProfileMapper.class, ExpenseJobMapper.class})
 public interface ExpenseMapper {
@@ -19,6 +24,13 @@ public interface ExpenseMapper {
     ExpenseRequest toExpenseRequest(ExpenseDto expenseDto);
     ExpenseRequest toExpenseRequest(Expense expense);
 
+
+    @IterableMapping(qualifiedByName = "ToExpenseDtoNamed")
+    List<ExpenseDto> toExpenseDtos(List<Expense> expenses);
+
+    // Give the single mapping a name so the list method can reuse it
+    @Named("ToExpenseDtoNamed")
+    ExpenseDto _toExpenseDto(Expense expense);
 
     void updateExpense( ExpenseRequest expenseRequest,@MappingTarget Expense expense);
 

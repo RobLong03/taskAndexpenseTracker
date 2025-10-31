@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IExpenseCategoryService {
-    public Integer SaveOrUpdateExpenseCategory(ExpenseCategoryRequest expenseCategoryRequest)throws Exception;
+    public void SaveOrUpdateExpenseCategory(ExpenseCategoryRequest expenseCategoryRequest)throws Exception;
 
     public void DeleteExpenseCategory(ExpenseCategoryRequest expenseCategoryRequest)throws Exception;
 

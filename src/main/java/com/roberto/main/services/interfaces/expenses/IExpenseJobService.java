@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface IExpenseJobService  {
 
 
-    public Integer SaveOrUpdateExpenseJob(ExpenseJobRequest expenseJobRequest)throws Exception;
+    public void SaveOrUpdateExpenseJob(ExpenseJobRequest expenseJobRequest)throws Exception;
 
     public void DeleteExpenseJob(ExpenseJobRequest expenseJobRequest)throws Exception;
 

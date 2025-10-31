@@ -51,6 +51,9 @@ public interface TaskProfileMapper {
     })
     TaskProfile toTaskProfile(TaskProfileDto taskProfileDto);
 
+
+    TaskProfile toTaskProfile(TaskProfileRequest taskProfileRequest);
+
     @IterableMapping(qualifiedByName = "dtoToTaskProfile")
     @Mappings({
             @Mapping(target = "user", source = "userDto"),

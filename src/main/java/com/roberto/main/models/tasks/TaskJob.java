@@ -38,7 +38,7 @@ public class TaskJob {
             fetch = FetchType.EAGER,
             mappedBy = "id"
     )
-    private List<Task> Tasks;
+    private List<Task> tasks;
 
 
 }

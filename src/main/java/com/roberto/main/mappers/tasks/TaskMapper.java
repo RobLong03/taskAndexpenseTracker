@@ -1,14 +1,17 @@
 package com.roberto.main.mappers.tasks;
 
+import com.roberto.main.dtos.anagraficas.UserDto;
 import com.roberto.main.dtos.tasks.TaskDto;
 import com.roberto.main.mappers.anagraficas.ExpenseProfileMapper;
 import com.roberto.main.mappers.expenses.ExpenseJobMapper;
+import com.roberto.main.models.anagraficas.User;
 import com.roberto.main.models.tasks.Task;
+import com.roberto.main.requests.anagraficas.UserRequest;
 import com.roberto.main.requests.tasks.TaskRequest;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring",uses = {ExpenseProfileMapper.class, ExpenseJobMapper.class})
 public interface TaskMapper {
@@ -38,12 +41,32 @@ public interface TaskMapper {
      })
      Task toTask(TaskRequest request);
 
+     @Mappings({
+             // Prevent cycles if Task has a back-reference to TaskJob/TaskProfile
+             @Mapping(target = "taskJob", ignore = true)
+     })
+     TaskRequest toTaskRequest(Task task);
      // Entity -> DTO (add ignores similarly if your DTO has back-refs)
      @Mappings({
               @Mapping(target = "taskJobDto", ignore = true) // uncomment if exists
      })
      TaskDto toTaskDto(Task task);
 
+
+     @IterableMapping(qualifiedByName = "userToTaskDtoNamed")
+     List<TaskDto> toTaskDtos(List<Task> tasks);
+
+     // Give the single mapping a name so the list method can reuse it
+     @Named("userToTaskDtoNamed")
+     @Mapping(target = "taskJobDto", ignore = true)
+     TaskDto _userToUserDto(Task user);
+
      //void updateExpenseProfile(Exp ||create an update
 
+
+     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+     @Mappings({
+             @Mapping(target = "financialProfile", source = "financialProfileRequest")
+     })
+     void updateTaskFromRequest(TaskRequest userRequest, @MappingTarget Task Task);
 }

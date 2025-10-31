@@ -32,7 +32,7 @@ public interface UserMapper {
     UserDto toUserDto(UserRequest userRequest);
 
     @Mappings({
-            @Mapping(target = "financialProfileRequest", source = "financialProfile")
+            @Mapping(target = "financialProfileRequest", source = "financialProfile"),
     })
     UserRequest toUserRequest(UserDto userDto);
 
